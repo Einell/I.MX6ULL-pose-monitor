@@ -1,7 +1,6 @@
 #include <linux/types.h>
 #include <linux/kernel.h>
 #include <linux/delay.h>
-#include <linux/ide.h>
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/errno.h>
@@ -11,11 +10,9 @@
 #include <linux/of_gpio.h>
 #include <linux/semaphore.h>
 #include <linux/timer.h>
-#include <linux/i2c.h>
 #include <linux/spi/spi.h>
 #include <linux/of.h>
 #include <linux/of_address.h>
-#include <linux/of_gpio.h>
 #include <linux/platform_device.h>
 #include <asm/mach/map.h>
 #include <asm/uaccess.h>
@@ -276,8 +273,8 @@ void icm20608_reginit(void)
 
  /*
   * @description     : spi驱动的probe函数
-  * @param - client  : i2c设备
-  * @param - id      : i2c设备ID
+  * @param - client  : spi设备
+  * @param - id      : spi设备ID
   * 
   */	
 static int icm20608_probe(struct spi_device *spi)
@@ -315,11 +312,18 @@ static int icm20608_probe(struct spi_device *spi)
 	/* 初始化ICM20608内部寄存器 */
 	icm20608_reginit();		
 	return 0;
+	fail_device:
+    	class_destroy(icm20608dev.class);
+	fail_class:
+    	cdev_del(&icm20608dev.cdev);
+	fail_cdev:
+    	unregister_chrdev_region(icm20608dev.devid, ICM20608_CNT);
+    	return ret;
 }
 
 /*
- * @description     : i2c驱动的remove函数
- * @param - client 	: i2c设备
+ * @description     : spi驱动的remove函数
+ * @param - client 	: spi设备
  * @return          : 0，成功;其他负值,失败
  */
 static int icm20608_remove(struct spi_device *spi)
