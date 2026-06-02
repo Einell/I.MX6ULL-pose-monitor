@@ -99,7 +99,7 @@
 ```dts
 &ecspi3 {
     fsl,spi-num-chipselects = <1>;
-    cs-gpios = <&gpio1 20 GPIO_ACTIVE_LOW>; /* 对应上面普通的 GPIO1_IO20 */
+    cs-gpios = <&gpio1 20 GPIO_ACTIVE_LOW>; 
     pinctrl-names = "default";
     pinctrl-0 = <&pinctrl_ecspi3>;
     status = "okay";
@@ -132,7 +132,7 @@ make dtbs
 ##  运行与测试指南
 
 ### 1. 克隆本仓库至根目录
-```git clone ```
+```git clone https://github.com/Einell/I.MX6ULL-pose-monitor.git```
 
 ### 2. 克隆lvgl仓库至项目目录pose_monitor下
 ```git clone https://github.com/lvgl/lvgl.git```
@@ -166,7 +166,7 @@ make -j4
 
 ### 5. 开发板启动与可视化
 
-将生成的 `pose_demo` 程序发送至开发板用户目录下，运行权限,清除显存，启动：
+将生成的 `pose_demo` 程序发送至开发板用户目录下，添加运行权限，清除显存，启动：
 
 ```bash
 chmod +x pose_demo
